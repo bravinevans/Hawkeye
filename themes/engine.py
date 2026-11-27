@@ -282,4 +282,5 @@ class ThemeEngine:
             font-weight: 700;
         }}
         """
+
         self.css_provider.load_from_data(css.encode("utf-8"))
