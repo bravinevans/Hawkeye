@@ -322,3 +322,19 @@ class HawkeyeTerminal(Gtk.Box):
 
     def focus_terminal(self) -> None:
         self.vte.grab_focus()
+
+    def _on_vte_key_pressed(self, _ctrl, keyval: int, _keycode: int, state: Gdk.ModifierType) -> bool:
+        ctrl = bool(state & Gdk.ModifierType.CONTROL_MASK)
+        shift = bool(state & Gdk.ModifierType.SHIFT_MASK)
+        if ctrl and shift:
+            if keyval in (Gdk.KEY_C, Gdk.KEY_c):
+                if hasattr(self.vte, "copy_clipboard_format"):
+                    self.vte.copy_clipboard_format(Vte.Format.TEXT)
+                elif hasattr(self.vte, "copy_clipboard"):
+                    self.vte.copy_clipboard()
+                return True
+            if keyval in (Gdk.KEY_V, Gdk.KEY_v):
+                if hasattr(self.vte, "paste_clipboard"):
+                    self.vte.paste_clipboard()
+                return True
+        return False
