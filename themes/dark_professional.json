@@ -1,0 +1,27 @@
+{
+  "id": "dark_professional",
+  "name": "Dark Professional",
+  "palette": {
+    "bg_primary": "#0d0f12",
+    "bg_secondary": "#13161b",
+    "bg_surface": "#1a1e24",
+    "bg_active": "#222730",
+    "border": "#2a303b",
+    "border_focus": "#7aa2c4",
+    "fg_primary": "#e2e8f0",
+    "fg_secondary": "#94a3b8",
+    "fg_muted": "#64748b",
+    "accent": "#7aa2c4",
+    "accent_secondary": "#475569",
+    "accent_fg": "#0d0f12",
+    "terminal_bg": "#0a0c0e",
+    "terminal_fg": "#cbd5e1",
+    "cursor": "#7aa2c4",
+    "ansi": [
+      "#13161b", "#ef4444", "#22c55e", "#eab308",
+      "#60a5fa", "#a78bfa", "#38bdf8", "#cbd5e1",
+      "#475569", "#f87171", "#4ade80", "#facc15",
+      "#93c5fd", "#c4b5fd", "#7dd3fc", "#f8fafc"
+    ]
+  }
+}

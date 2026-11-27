@@ -1,0 +1,22 @@
+[app]
+name = "HAWKEYE"
+tagline = "SEE MORE. DO MORE."
+version = "1.0.0"
+default_theme = "cyberpunk_neon"
+restore_session = true
+
+[window]
+width = 880
+height = 540
+sidebar_visible = true
+sidebar_width = 160
+
+[terminal]
+shell = ""
+font_family = "Monospace"
+font_size = 10
+scrollback_lines = 10000
+cursor_blink = true
+cursor_shape = "block"
+opacity = 0.96
+border_radius = 6

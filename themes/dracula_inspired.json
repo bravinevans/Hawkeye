@@ -1,0 +1,27 @@
+{
+  "id": "dracula_inspired",
+  "name": "Dracula Inspired",
+  "palette": {
+    "bg_primary": "#110f1a",
+    "bg_secondary": "#181524",
+    "bg_surface": "#211d30",
+    "bg_active": "#2b2440",
+    "border": "#3b3054",
+    "border_focus": "#9333ea",
+    "fg_primary": "#f3e8ff",
+    "fg_secondary": "#c4b5fd",
+    "fg_muted": "#7c6fa0",
+    "accent": "#9333ea",
+    "accent_secondary": "#6b21a8",
+    "accent_fg": "#ffffff",
+    "terminal_bg": "#0d0b14",
+    "terminal_fg": "#e9d5ff",
+    "cursor": "#a855f7",
+    "ansi": [
+      "#181524", "#ef4444", "#22c55e", "#eab308",
+      "#6366f1", "#9333ea", "#06b6d4", "#e9d5ff",
+      "#584c78", "#f87171", "#4ade80", "#facc15",
+      "#818cf8", "#c084fc", "#22d3ee", "#ffffff"
+    ]
+  }
+}

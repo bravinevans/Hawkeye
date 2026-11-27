@@ -1,0 +1,27 @@
+{
+  "id": "matrix_terminal",
+  "name": "Matrix Terminal",
+  "palette": {
+    "bg_primary": "#050906",
+    "bg_secondary": "#09110c",
+    "bg_surface": "#0e1a12",
+    "bg_active": "#132419",
+    "border": "#1b3323",
+    "border_focus": "#22c55e",
+    "fg_primary": "#dcfce7",
+    "fg_secondary": "#86efac",
+    "fg_muted": "#3f7a54",
+    "accent": "#22c55e",
+    "accent_secondary": "#15803d",
+    "accent_fg": "#050906",
+    "terminal_bg": "#040705",
+    "terminal_fg": "#22c55e",
+    "cursor": "#22c55e",
+    "ansi": [
+      "#09110c", "#ef4444", "#22c55e", "#eab308",
+      "#0ea5e9", "#a855f7", "#14b8a6", "#bbf7d0",
+      "#274a34", "#f87171", "#4ade80", "#facc15",
+      "#38bdf8", "#c084fc", "#2dd4bf", "#ffffff"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=HAWKEYE
+GenericName=Advanced Terminal Environment
+Comment=SEE MORE. DO MORE. GTK4 + VTE terminal environment for Arch Linux
+Exec=/usr/bin/hawkeye
+Icon=hawkeye
+Terminal=false
+Categories=System;TerminalEmulator;Utility;
+Keywords=terminal;shell;bash;zsh;console;arch;
+StartupWMClass=com.hawkeye.terminal

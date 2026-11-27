@@ -1,0 +1,28 @@
+{
+  "id": "cyberpunk_neon",
+  "name": "Cyberpunk Neon",
+  "palette": {
+    "bg_primary": "#101722",
+    "bg_secondary": "#151e2c",
+    "bg_surface": "#1c2738",
+    "bg_active": "#281b38",
+    "border": "#263449",
+    "border_focus": "#00C9F0",
+    "fg_primary": "#D9E2EC",
+    "fg_secondary": "#9FB3C8",
+    "fg_muted": "#627D98",
+    "accent": "#00C9F0",
+    "accent_secondary": "#A855F7",
+    "accent_selected": "#E83BEF",
+    "accent_fg": "#101722",
+    "terminal_bg": "#0b1018",
+    "terminal_fg": "#D9E2EC",
+    "cursor": "#00C9F0",
+    "ansi": [
+      "#101722", "#EF4444", "#10B981", "#F59E0B",
+      "#00C9F0", "#A855F7", "#22D3EE", "#D9E2EC",
+      "#486581", "#F87171", "#34D399", "#FBBF24",
+      "#38BDF8", "#E83BEF", "#67E8F9", "#F8FAFC"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "amber_tactical",
+  "name": "Amber Tactical",
+  "palette": {
+    "bg_primary": "#0e0c08",
+    "bg_secondary": "#15120c",
+    "bg_surface": "#1e1910",
+    "bg_active": "#292215",
+    "border": "#3d321e",
+    "border_focus": "#f59e0b",
+    "fg_primary": "#fef3c7",
+    "fg_secondary": "#d6b87c",
+    "fg_muted": "#8c734b",
+    "accent": "#f59e0b",
+    "accent_secondary": "#b45309",
+    "accent_fg": "#0e0c08",
+    "terminal_bg": "#0a0906",
+    "terminal_fg": "#fbbf24",
+    "cursor": "#f59e0b",
+    "ansi": [
+      "#15120c", "#dc2626", "#65a30d", "#f59e0b",
+      "#0284c7", "#9333ea", "#0d9488", "#fde68a",
+      "#574934", "#ef4444", "#84cc16", "#fbbf24",
+      "#38bdf8", "#a855f7", "#2dd4bf", "#ffffff"
+    ]
+  }
+}

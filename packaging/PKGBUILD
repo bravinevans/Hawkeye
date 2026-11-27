@@ -1,0 +1,47 @@
+# Maintainer: Bravin Evans Kiplagat <bravinevans1@gmail.com>
+pkgname=hawkeye
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="HAWKEYE — SEE MORE. DO MORE. GTK4 + VTE advanced terminal environment for Arch Linux"
+arch=('any')
+url="https://github.com/bravinevans/Hawkeye"
+license=('MIT')
+depends=(
+  'python'
+  'gtk4'
+  'vte4'
+  'python-gobject'
+  'python-cairo'
+  'python-psutil'
+)
+optdepends=(
+  'python-keyring: Secure API key storage in system keyring'
+  'yay: AUR package support'
+)
+source=()
+
+package() {
+  local srcdir_root="${startdir}/.."
+  install -dm755 "${pkgdir}/usr/share/hawkeye"
+  cp -r "${srcdir_root}/main.py" \
+        "${srcdir_root}/core" \
+        "${srcdir_root}/ui" \
+        "${srcdir_root}/modules" \
+        "${srcdir_root}/themes" \
+        "${srcdir_root}/settings" \
+        "${srcdir_root}/config" \
+        "${srcdir_root}/assets" \
+        "${pkgdir}/usr/share/hawkeye/"
+
+  install -dm755 "${pkgdir}/usr/bin"
+  cat << 'LAUNCHER' > "${pkgdir}/usr/bin/hawkeye"
+#!/usr/bin/env bash
+exec python3 /usr/share/hawkeye/main.py "$@"
+LAUNCHER
+  chmod 755 "${pkgdir}/usr/bin/hawkeye"
+
+  install -Dm644 "${srcdir_root}/packaging/hawkeye.desktop" \
+    "${pkgdir}/usr/share/applications/hawkeye.desktop"
+  install -Dm644 "${srcdir_root}/assets/logo/hawkeye.svg" \
+    "${pkgdir}/usr/share/icons/hicolor/scalable/apps/hawkeye.svg"
+}

@@ -1,0 +1,11 @@
+[app]
+default_theme = "cyberpunk_neon"
+
+[terminal]
+font_family = "Monospace"
+font_size = 11
+cursor_shape = "block"
+
+[ai]
+api_url = "https://openrouter.ai/api/v1/chat/completions"
+model = "google/gemini-2.0-flash-exp:free"
