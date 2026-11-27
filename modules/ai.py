@@ -1,6 +1,7 @@
 import json
 import re
 import threading
+import urllib.error
 import urllib.request
 import gi
 
@@ -27,6 +28,7 @@ class HawkeyeHelperPanel(Gtk.Box):
         self.on_save_ai_config = on_save_ai_config
         self.config = config or {}
         self.full_page = full_page
+        has_key = bool(load_api_key())
 
         if full_page:
             self.set_margin_top(20)
@@ -44,13 +46,12 @@ class HawkeyeHelperPanel(Gtk.Box):
         title.set_xalign(0.0)
         title.set_hexpand(True)
 
-        self.cfg_toggle_btn = Gtk.Button(label="API Setup")
+        self.cfg_toggle_btn = Gtk.Button(label="Edit Key" if has_key else "API Setup")
         self.cfg_toggle_btn.add_css_class("header-btn")
         self.cfg_toggle_btn.connect("clicked", lambda *_: self._toggle_config_box())
 
         header.append(title)
-        if not full_page:
-            header.append(self.cfg_toggle_btn)
+        header.append(self.cfg_toggle_btn)
         self.append(header)
 
         subtitle = Gtk.Label(
@@ -61,10 +62,10 @@ class HawkeyeHelperPanel(Gtk.Box):
         subtitle.set_wrap(True)
         self.append(subtitle)
 
-        # BYOK API Configuration Card
+        # BYOK API Configuration Card: open if no key saved yet, collapsed if already saved
         self.config_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         self.config_card.add_css_class("panel-card")
-        self.config_card.set_visible(full_page)
+        self.config_card.set_visible(not has_key)
         self._build_api_setup_ui(self.config_card)
         self.append(self.config_card)
 
@@ -160,11 +161,17 @@ class HawkeyeHelperPanel(Gtk.Box):
         backend = save_api_key(key)
         self.on_save_ai_config(url, model)
         self.ai_status_lbl.set_text(f"Saved ({backend})." if key else "Key cleared.")
+        self.cfg_toggle_btn.set_label("Edit Key" if key else "API Setup")
+        if key:
+            self.config_card.set_visible(False)
         self.refresh_status()
 
     def refresh_status(self) -> None:
         self._clear_results()
         has_key = bool(load_api_key())
+        self.cfg_toggle_btn.set_label("Edit Key" if has_key else "API Setup")
+        if has_key:
+            self.config_card.set_visible(False)
         status = (
             "Helper AI connected. Ask me to write code, edit files in place, explain commands, or troubleshoot errors."
             if has_key
@@ -248,11 +255,24 @@ class HawkeyeHelperPanel(Gtk.Box):
                 parsed = json.loads(content)
                 if isinstance(parsed, list) and parsed:
                     return parsed
+        except urllib.error.HTTPError as exc:
+            body = ""
+            try:
+                body = exc.read().decode("utf-8", errors="replace")[:300]
+            except Exception:
+                pass
+            return [
+                {
+                    "title": "Helper Request Error",
+                    "explanation": f"HTTP {exc.code} from {api_url} (model: {model}). {body}",
+                    "command": "",
+                }
+            ]
         except Exception as exc:
             return [
                 {
                     "title": "Helper Request Error",
-                    "explanation": f"Could not reach AI provider: {exc}. Verify your API key, endpoint URL, and model name in API Setup.",
+                    "explanation": f"Could not reach AI provider: {exc}. Verify your API key, endpoint URL, and model name in Edit Key / API Setup.",
                     "command": "",
                 }
             ]
