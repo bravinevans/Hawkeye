@@ -260,7 +260,7 @@ class HawkeyeHelperPanel(Gtk.Box):
 
         req = urllib.request.Request(api_url, data=payload, headers=headers)
         try:
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=45) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 content = data["choices"][0]["message"]["content"].strip()
                 content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content)
