@@ -196,10 +196,19 @@ class HawkeyeHelperPanel(Gtk.Box):
             return
         self.ask_btn.set_sensitive(False)
         self._clear_results()
-        lbl = Gtk.Label(label="Thinking...")
+        self._thinking = True
+        lbl = Gtk.Label(label="Thinking... 0.0s")
         lbl.add_css_class("hawkeye-tagline")
         lbl.set_xalign(0.0)
         self.results_box.append(lbl)
+        import time
+        t0 = time.monotonic()
+        def _tick():
+            if not getattr(self, "_thinking", False):
+                return False
+            lbl.set_text(f"Thinking... {time.monotonic() - t0:.1f}s")
+            return True
+        GLib.timeout_add(100, _tick)
         threading.Thread(target=self._worker, args=(query,), daemon=True).start()
 
     def _worker(self, query: str) -> None:
@@ -207,6 +216,7 @@ class HawkeyeHelperPanel(Gtk.Box):
         GLib.idle_add(self._on_worker_done, cards)
 
     def _on_worker_done(self, cards: list[dict]) -> None:
+        self._thinking = False
         self.ask_btn.set_sensitive(True)
         self._render_cards(cards)
 
@@ -231,16 +241,18 @@ class HawkeyeHelperPanel(Gtk.Box):
             '[{"title": "Short heading", "explanation": "Clear answer or code explanation", "command": "Optional runnable shell command or heredoc file edit, or empty string if conversational"}]. '
             "When asked to write or edit a file, provide a clean shell command (e.g. cat << 'EOF' > file or python -c ...) in 'command' so the user can inject or run it directly in their terminal."
         )
-        payload = json.dumps(
-            {
-                "model": model,
-                "messages": [
-                    {"role": "system", "content": sys_prompt},
-                    {"role": "user", "content": query},
-                ],
-                "temperature": 0.3,
-            }
-        ).encode("utf-8")
+        body_obj = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": sys_prompt},
+                {"role": "user", "content": query},
+            ],
+            "temperature": 0.2,
+            "max_tokens": 700,
+        }
+        if "generativelanguage.googleapis.com" in api_url:
+            body_obj["reasoning_effort"] = "none"
+        payload = json.dumps(body_obj).encode("utf-8")
 
         headers = {"Content-Type": "application/json"}
         if api_key:
@@ -248,7 +260,7 @@ class HawkeyeHelperPanel(Gtk.Box):
 
         req = urllib.request.Request(api_url, data=payload, headers=headers)
         try:
-            with urllib.request.urlopen(req, timeout=25) as resp:
+            with urllib.request.urlopen(req, timeout=15) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 content = data["choices"][0]["message"]["content"].strip()
                 content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content)
