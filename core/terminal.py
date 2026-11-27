@@ -324,17 +324,34 @@ class HawkeyeTerminal(Gtk.Box):
         self.vte.grab_focus()
 
     def _on_vte_key_pressed(self, _ctrl, keyval: int, _keycode: int, state: Gdk.ModifierType) -> bool:
-        ctrl = bool(state & Gdk.ModifierType.CONTROL_MASK)
-        shift = bool(state & Gdk.ModifierType.SHIFT_MASK)
-        if ctrl and shift:
-            if keyval in (Gdk.KEY_C, Gdk.KEY_c):
-                if hasattr(self.vte, "copy_clipboard_format"):
-                    self.vte.copy_clipboard_format(Vte.Format.TEXT)
-                elif hasattr(self.vte, "copy_clipboard"):
-                    self.vte.copy_clipboard()
-                return True
-            if keyval in (Gdk.KEY_V, Gdk.KEY_v):
+    ctrl = bool(state & Gdk.ModifierType.CONTROL_MASK)
+    shift = bool(state & Gdk.ModifierType.SHIFT_MASK)
+    if not (ctrl and shift):
+        return False
+
+    key_name = (Gdk.keyval_name(keyval) or "").lower()
+    if key_name == "c" or keyval in (Gdk.KEY_C, Gdk.KEY_c):
+        if self.vte.get_has_selection():
+            if hasattr(self.vte, "copy_clipboard_format"):
+                self.vte.copy_clipboard_format(Vte.Format.TEXT)
+            elif hasattr(self.vte, "copy_clipboard"):
+                self.vte.copy_clipboard()
+        return True
+
+    if key_name == "v" or keyval in (Gdk.KEY_V, Gdk.KEY_v):
+        clipboard = Gdk.Display.get_default().get_clipboard()
+        def _on_text(cb, res):
+            try:
+                text = cb.read_text_finish(res)
+                if text:
+                    if hasattr(self.vte, "paste_text"):
+                        self.vte.paste_text(text)
+                    else:
+                        self.vte.feed_child(text.encode("utf-8"))
+            except Exception:
                 if hasattr(self.vte, "paste_clipboard"):
                     self.vte.paste_clipboard()
-                return True
-        return False
+        clipboard.read_text_async(None, _on_text)
+        return True
+
+    return False
